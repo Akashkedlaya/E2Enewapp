@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Calculator - Microservices</title>
+  <style>
+    body { font-family: Arial; padding: 30px; }
+    input { width: 100px; padding: 6px; margin-right: 8px; }
+    button { padding: 6px 10px; margin: 4px; }
+    .box { margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Microservice Calculator</h1>
+
+  <input id="a" type="number" value="10" />
+  <input id="b" type="number" value="5" />
+
+  <div class="box">
+    <button onclick="call('add')">+</button>
+    <button onclick="call('subtract')">-</button>
+    <button onclick="call('multiply')">*</button>
+    <button onclick="call('divide')">/</button>
+  </div>
+
+  <h3>Result: <span id="res">—</span></h3>
+
+ <script>
+  const API = "/api";  // USE SERVICE NAME
+
+  async function call(op){
+    const a = parseFloat(document.getElementById('a').value || 0);
+    const b = parseFloat(document.getElementById('b').value || 0);
+    try {
+      const r = await fetch(`${API}/${op}`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({a,b})
+      });
+      const j = await r.json();
+      document.getElementById('res').textContent = j.result ?? j.error ?? JSON.stringify(j);
+    } catch(err){
+      document.getElementById('res').textContent = 'Error: ' + err.message;
+    }
+  }
+</scripti
+</body>
+</html>
+ 

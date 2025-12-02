@@ -1,12 +1,20 @@
 version: "3.8"
+
 services:
+
   backend:
+    container_name: backend-service
     build: ./backend
     ports:
       - "5000:5000"
+    restart: unless-stopped
+
   frontend:
+    container_name: frontend-service
     build: ./frontend
     ports:
       - "8080:80"
     depends_on:
       - backend
+    restart: unless-stopped
+
